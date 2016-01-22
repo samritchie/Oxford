@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Oxford.xcscheme</key>
+		<key>Oxford-OSX.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>Oxford-iOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,6 +17,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>2252B7F01C52161200AF1775</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2252B7F91C52161200AF1775</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>22D10CE61C4682CA006A75BE</key>
 		<dict>
 			<key>primary</key>
