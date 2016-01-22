@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Oxford.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22D10CF01C4682CA006A75BE"
+               BuildableName = "OxfordTests.xctest"
+               BlueprintName = "OxfordTests"
+               ReferencedContainer = "container:Oxford.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,7 +42,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22D10CF01C4682CA006A75BE"
+               BuildableName = "OxfordTests.xctest"
+               BlueprintName = "OxfordTests"
+               ReferencedContainer = "container:Oxford.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "22D10CE61C4682CA006A75BE"
+            BuildableName = "Oxford.framework"
+            BlueprintName = "Oxford-iOS"
+            ReferencedContainer = "container:Oxford.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

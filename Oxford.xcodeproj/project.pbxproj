@@ -10,6 +10,10 @@
 		2221800A1C50D89B00CB5DBA /* test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 222180091C50D89B00CB5DBA /* test.csv */; };
 		2252B8081C52167D00AF1775 /* CSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D10D011C4682D9006A75BE /* CSV.swift */; };
 		2252B8091C52168600AF1775 /* Oxford.h in Headers */ = {isa = PBXBuildFile; fileRef = 22D10CEA1C4682CA006A75BE /* Oxford.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2252B8401C5229F300AF1775 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2252B83F1C5229F300AF1775 /* SwiftCheck.framework */; };
+		2252B8431C522A1600AF1775 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2252B8421C522A1600AF1775 /* SwiftCheck.framework */; };
+		2252B8441C522AB900AF1775 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2252B83F1C5229F300AF1775 /* SwiftCheck.framework */; };
+		2252B8461C5234E300AF1775 /* SwiftCheck.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2252B83F1C5229F300AF1775 /* SwiftCheck.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22D10CEB1C4682CA006A75BE /* Oxford.h in Headers */ = {isa = PBXBuildFile; fileRef = 22D10CEA1C4682CA006A75BE /* Oxford.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22D10CF21C4682CA006A75BE /* Oxford.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D10CE71C4682CA006A75BE /* Oxford.framework */; };
 		22D10CF71C4682CA006A75BE /* OxfordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D10CF61C4682CA006A75BE /* OxfordTests.swift */; };
@@ -26,9 +30,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2252B8451C5234DE00AF1775 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2252B8461C5234E300AF1775 /* SwiftCheck.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		222180091C50D89B00CB5DBA /* test.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.csv; sourceTree = "<group>"; };
 		2252B7F11C52161200AF1775 /* Oxford.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Oxford.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2252B83F1C5229F300AF1775 /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = Carthage/Build/iOS/SwiftCheck.framework; sourceTree = "<group>"; };
+		2252B8421C522A1600AF1775 /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = Carthage/Build/Mac/SwiftCheck.framework; sourceTree = "<group>"; };
 		22D10CE71C4682CA006A75BE /* Oxford.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Oxford.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D10CEA1C4682CA006A75BE /* Oxford.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Oxford.h; sourceTree = "<group>"; };
 		22D10CEC1C4682CA006A75BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,6 +69,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2252B8401C5229F300AF1775 /* SwiftCheck.framework in Frameworks */,
+				2252B8431C522A1600AF1775 /* SwiftCheck.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,15 +79,42 @@
 			buildActionMask = 2147483647;
 			files = (
 				22D10CF21C4682CA006A75BE /* Oxford.framework in Frameworks */,
+				2252B8441C522AB900AF1775 /* SwiftCheck.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2252B83D1C5229DB00AF1775 /* Carthage */ = {
+			isa = PBXGroup;
+			children = (
+				2252B8411C5229F900AF1775 /* Mac */,
+				2252B83E1C5229E300AF1775 /* iOS */,
+			);
+			name = Carthage;
+			sourceTree = "<group>";
+		};
+		2252B83E1C5229E300AF1775 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2252B83F1C5229F300AF1775 /* SwiftCheck.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		2252B8411C5229F900AF1775 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				2252B8421C522A1600AF1775 /* SwiftCheck.framework */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
 		22D10CDD1C4682CA006A75BE = {
 			isa = PBXGroup;
 			children = (
+				2252B83D1C5229DB00AF1775 /* Carthage */,
 				22D10CE91C4682CA006A75BE /* Oxford */,
 				22D10CF51C4682CA006A75BE /* OxfordTests */,
 				22D10CE81C4682CA006A75BE /* Products */,
@@ -168,6 +216,7 @@
 				22D10CED1C4682CA006A75BE /* Sources */,
 				22D10CEE1C4682CA006A75BE /* Frameworks */,
 				22D10CEF1C4682CA006A75BE /* Resources */,
+				2252B8451C5234DE00AF1775 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -419,6 +468,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = Oxford/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -437,6 +491,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = Oxford/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -449,6 +508,10 @@
 		22D10CFF1C4682CA006A75BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = OxfordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.codesplice.OxfordTests;
@@ -459,6 +522,10 @@
 		22D10D001C4682CA006A75BE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = OxfordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.codesplice.OxfordTests;

@@ -8,7 +8,7 @@ Oxford is a streaming CSV parser written in Swift. It’s currently at an alpha 
 ## Usage
 
 ```swift
-let csv = try! CSV(path: NSBundle.mainBundle.pathForResource("test", ofType: "csv")!)
+let csv = try! CSV(path: NSBundle.mainBundle().pathForResource("test", ofType: "csv")!)
 for line in csv.rows {
     print(line["Name"])
 }
@@ -22,5 +22,5 @@ for line in csv.rows {
 * Tests
 * Documentation
 * Cool logo
-* Everythying, really
+* Everything, really
 
