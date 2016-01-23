@@ -100,10 +100,31 @@ struct LineSequence: SequenceType {
     }
 }
 
-struct CSVSequence: SequenceType {
+// MARK:- public types
+
+public enum CSVError: ErrorType {
+    case FileSystemError
+    case EncodingError
+    case FileEmptyError
+    case FieldCountError
+}
+
+public struct CSVSequence: SequenceType {
     private let lineSequence: LineSequence
     
-    func generate() -> AnyGenerator<[String: String]> {
+    init(lineSequence: LineSequence) {
+        self.lineSequence = lineSequence
+    }
+    
+    public init(path: String) throws {
+        if let stream = NSInputStream(fileAtPath: path) {
+            self.init(lineSequence: stream.lines())
+        } else {
+            throw CSVError.FileSystemError
+        }
+    }
+    
+    public func generate() -> AnyGenerator<[String: String]> {
         let lineGenerator = lineSequence.generate()
         guard let firstLine = lineGenerator.next() else { return anyGenerator(EmptyGenerator<[String: String]>()) }
         let headers = firstLine.splitLine()
@@ -119,31 +140,4 @@ struct CSVSequence: SequenceType {
             }
         }
     }
-}
-
-// MARK:- public types
-
-public enum CSVError: ErrorType {
-    case FileSystemError
-    case EncodingError
-    case FileEmptyError
-    case FieldCountError
-}
-
-public class CSV {
-    private let stream: NSInputStream
-    
-    public init(path: String) throws {
-        if let stream = NSInputStream(fileAtPath: path) {
-            self.stream = stream
-        } else {
-            self.stream = NSInputStream() // all stored properties of a class instance must be initialized before throwing from an initializer 😡
-            throw CSVError.FileSystemError
-        }
-    }
-    
-    public var rows: AnySequence<[String: String]> {
-        return AnySequence<[String: String]>(CSVSequence(lineSequence: stream.lines()))
-    }
-
 }
