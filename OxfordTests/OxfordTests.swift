@@ -7,18 +7,17 @@
 //
 
 import XCTest
+import Foundation
 import SwiftCheck
 @testable import Oxford
 
-struct CSVLine: Arbitrary {
-    let values: [String]
-    
-    static var arbitrary: SwiftCheck.Gen<CSVLine> {
-        return CSVLine.init <^> [String].arbitrary
+extension String {
+    func quote() -> String {
+        return "\"" + self.stringByReplacingOccurrencesOfString("\"", withString: "\"\"") + "\""
     }
 }
 
-struct CSVFile: Arbitrary {
+struct CSVFile: Arbitrary, CustomDebugStringConvertible {
     let headers: [String]
     let data: [[String]]
 
@@ -27,19 +26,21 @@ struct CSVFile: Arbitrary {
     }
     
     static var arbitrary: SwiftCheck.Gen<CSVFile> {
-        // TODO: field counts should match
         return Int.arbitrary.suchThat { $0 > 0 }.flatMap { fieldCount in
-            return CSVFile.create <^> [String].arbitrary.resize(fieldCount) <*> sequence([[String].arbitrary.resize(fieldCount)])
+            return CSVFile.create <^> String.arbitrary.proliferateSized(fieldCount) <*>  String.arbitrary.proliferateSized(fieldCount).proliferate
         }
     }
     
-    func csvData() -> NSData {
-        let str = headers.joinWithSeparator(",") + "\r\n" + data.map { $0.joinWithSeparator(",") }.joinWithSeparator("\r\n")
-        return (str as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
+    func asString() -> String {
+        return headers.map { $0.quote() }.joinWithSeparator(",") + "\r\n" + data.map { l in l.map { $0.quote() }.joinWithSeparator(",") }.joinWithSeparator("\r\n")
+    }
+
+    func asData() -> NSData {
+        return (self.asString() as NSString).dataUsingEncoding(NSUTF8StringEncoding)!
     }
     
     func asDictionaries() -> [[String: String]] {
-        return data.map { values in
+         return data.map { values in
             return zip(headers, values).reduce([:]) { (acc: [String: String], p: (String, String)) in
                 var dict = acc
                 dict[p.0] = p.1
@@ -47,11 +48,14 @@ struct CSVFile: Arbitrary {
             }
         }
     }
+    
+    var debugDescription: String {
+        return self.asString()
+    }
 }
 
 class OxfordTests: XCTestCase {
     
-    // TODO: Use Swiftcheck like a boss
     func testBasicParsing() {
         let csv = try! CSVSequence(path: NSBundle(forClass: OxfordTests.self).URLForResource("test", withExtension: "csv")!.path!)
         let expected = [
@@ -62,8 +66,9 @@ class OxfordTests: XCTestCase {
     }
     
     func testAll() {
-        property("values match") <- forAll { (file: CSVFile) in
-            return true
+        property("parsed dictionarys equal source data") <- forAll { (file: CSVFile) in
+            let parsed = Array(CSVSequence(data: file.asData()))
+            return parsed == file.asDictionaries()
         }
     }
 }

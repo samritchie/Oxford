@@ -96,7 +96,7 @@ struct LineSequence: SequenceType {
         var bytes = bytes
         let data = NSData(bytes: &bytes, length: bytes.count)
         // TODO: handle different file encodings
-        return NSString(data: data, encoding: NSASCIIStringEncoding) as! String
+        return NSString(data: data, encoding: NSUTF8StringEncoding) as! String
     }
 }
 
@@ -124,6 +124,14 @@ public struct CSVSequence: SequenceType {
         }
     }
     
+    public init(stream: NSInputStream) {
+        self.init(lineSequence: stream.lines())
+    }
+
+    public init(data: NSData) {
+        self.init(lineSequence: NSInputStream(data: data).lines())
+    }
+
     public func generate() -> AnyGenerator<[String: String]> {
         let lineGenerator = lineSequence.generate()
         guard let firstLine = lineGenerator.next() else { return anyGenerator(EmptyGenerator<[String: String]>()) }
