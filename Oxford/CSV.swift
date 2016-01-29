@@ -24,6 +24,39 @@ import Foundation
 
 // MARK:- Extensions
 
+protocol Byte {
+    func asUInt8() -> UInt8
+}
+
+extension UInt8: Byte {
+    static let doubleQuote: UInt8 = 0x22
+    static let carriageReturn: UInt8 = 0x0D
+    static let lineFeed: UInt8 = 0x0A
+    
+    func asUInt8() -> UInt8 {
+        return self
+    }
+}
+
+extension Array where Element: Byte {
+    func indexOfFirstLinebreak() -> Index? {
+        var quoteCount = 0
+        for (i, byte) in self.enumerate() {
+            switch byte.asUInt8() {
+            case UInt8.doubleQuote:
+                quoteCount++
+            case UInt8.lineFeed where quoteCount % 2 == 0,
+                UInt8.carriageReturn where quoteCount % 2 == 0
+                    && (i + 1) < count && self[i + 1].asUInt8() == UInt8.lineFeed:
+                return i
+            default:
+                break
+            }
+         }
+        return nil
+    }
+}
+
 extension String {
     func splitLine() -> [String] {
         // TODO: manage commas in quoted string elements.
@@ -70,13 +103,17 @@ struct LineSequence: SequenceType {
         var remaining: [UInt8] = []
         let bufferGenerator = buffer.generate()
         return anyGenerator {
-            // TODO: handle CRLF in quotes
-            if !remaining.contains(0x0A) {
+            
+            var linebreakIndex = remaining.indexOfFirstLinebreak()
+            while linebreakIndex == nil {
                 if let next = bufferGenerator.next() {
                     remaining = remaining + next
+                    linebreakIndex = remaining.indexOfFirstLinebreak()
+                } else {
+                    break
                 }
             }
-            while let firstChar = remaining.first where firstChar == 0x0A || firstChar == 0x0D {
+            while let firstChar = remaining.first where firstChar == UInt8.lineFeed || firstChar == UInt8.carriageReturn {
                 remaining.removeFirst()
             }
             if remaining.count == 0 { return nil }
@@ -109,7 +146,7 @@ public enum CSVError: ErrorType {
     case FieldCountError
 }
 
-public struct CSVSequence: SequenceType {
+public struct CSV: SequenceType {
     private let lineSequence: LineSequence
     
     init(lineSequence: LineSequence) {

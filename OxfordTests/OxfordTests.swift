@@ -27,7 +27,7 @@ struct CSVFile: Arbitrary, CustomDebugStringConvertible {
     
     static var arbitrary: SwiftCheck.Gen<CSVFile> {
         return Int.arbitrary.suchThat { $0 > 0 }.flatMap { fieldCount in
-            return CSVFile.create <^> String.arbitrary.proliferateSized(fieldCount) <*>  String.arbitrary.proliferateSized(fieldCount).proliferate
+            return CSVFile.create <^> String.arbitrary.proliferateSized(fieldCount) <*> String.arbitrary.proliferateSized(fieldCount).proliferate
         }
     }
     
@@ -57,7 +57,7 @@ struct CSVFile: Arbitrary, CustomDebugStringConvertible {
 class OxfordTests: XCTestCase {
     
     func testBasicParsing() {
-        let csv = try! CSVSequence(path: NSBundle(forClass: OxfordTests.self).URLForResource("test", withExtension: "csv")!.path!)
+        let csv = try! CSV(path: NSBundle(forClass: OxfordTests.self).URLForResource("test", withExtension: "csv")!.path!)
         let expected = [
             ["One": "1", "Three": "3", "Two": "2"],
             ["One": "4", "Three": "6", "Two": "5"]
@@ -66,8 +66,8 @@ class OxfordTests: XCTestCase {
     }
     
     func testAll() {
-        property("parsed dictionarys equal source data") <- forAll { (file: CSVFile) in
-            let parsed = Array(CSVSequence(data: file.asData()))
+        property("parsed rows equal source data") <- forAll { (file: CSVFile) in
+            let parsed = Array(CSV(data: file.asData()))
             return parsed == file.asDictionaries()
         }
     }
