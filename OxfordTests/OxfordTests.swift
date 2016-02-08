@@ -17,6 +17,26 @@ extension String {
     }
 }
 
+extension Array {
+    
+    static func shrinkArrayOnly(array: [Element]) -> [[Element]] {
+        guard array.count > 1 else { return [] }
+        var comb = [[Element]]()
+        for i in 0..<array.count {
+            comb.append(array.exceptIndex(i))
+        }
+        return comb
+    }
+        
+    private func exceptIndex(n: Int) -> [Element] {
+        var ret = [Element]()
+        for (i, e) in self.enumerate() {
+            if i != n { ret.append(e) }
+        }
+        return ret
+    }
+}
+
 struct CSVFile: Arbitrary, CustomDebugStringConvertible {
     let headers: [String]
     let data: [[String]]
@@ -29,6 +49,27 @@ struct CSVFile: Arbitrary, CustomDebugStringConvertible {
         return Int.arbitrary.suchThat { $0 > 0 }.flatMap { fieldCount in
             return CSVFile.create <^> String.arbitrary.proliferateSized(fieldCount) <*> String.arbitrary.proliferateSized(fieldCount).proliferate
         }
+    }
+    
+    static func shrink(file: CSVFile) -> [CSVFile] {
+        print("shrinking...")
+        return shrinkColumns(file) + shrinkRows(file)
+    }
+    
+    static func shrinkRows(file: CSVFile) -> [CSVFile] {
+        return [[String]].shrinkArrayOnly(file.data).map { d in CSVFile(headers: file.headers, data: d) }
+    }
+    
+    static func shrinkColumns(file: CSVFile) -> [CSVFile] {
+        let headersArrays =  [String].shrinkArrayOnly(file.headers)
+        func rowsForHeaders(newHeaders: [String]) -> [[String]] {
+            return file.data.map { line in
+                return newHeaders.map { h in
+                    return line[file.headers.indexOf(h)!]
+                }
+            }
+        }
+        return headersArrays.map { hs in CSVFile.create(hs)(rowsForHeaders(hs)) }
     }
     
     func asString() -> String {
@@ -64,9 +105,10 @@ class OxfordTests: XCTestCase {
         ]
         XCTAssert(csv.elementsEqual(expected, isEquivalent: ==))
     }
-    
+
     func testAll() {
         property("parsed rows equal source data") <- forAll { (file: CSVFile) in
+            //print(file)
             let parsed = Array(CSV(data: file.asData()))
             return parsed == file.asDictionaries()
         }
